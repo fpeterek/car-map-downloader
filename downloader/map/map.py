@@ -1,8 +1,8 @@
 from typing import Set, Union
 import json
 
-from node import Node
-from path import Path
+from map.node import Node
+from map.path import Path
 
 
 class Map:
@@ -26,16 +26,16 @@ class Map:
             node.add_path(path)
 
     def add(self, item: Union[Path, Node]) -> None:
-        if item is Path:
+        if type(item) is Path:
             self.add_path(item)
-        elif item is Node:
+        elif type(item) is Node:
             self.add_node(item)
 
     def reduce(self) -> None:
         filtered = filter(lambda node: len(node.paths) > 0, self.nodes)
         self.nodes = set(filtered)
 
-    def to_json(self) -> str:
+    def to_json(self, pretty: bool = False) -> str:
         nodes = [node.json_dict for node in self.nodes]
         paths = [path.json_dict for path in self.paths]
         map_dict = {
@@ -43,4 +43,4 @@ class Map:
             'paths': paths
         }
         outer_dict = {'map': map_dict}
-        return json.dumps(outer_dict)
+        return json.dumps(outer_dict, indent=2) if pretty else json.dumps(outer_dict)

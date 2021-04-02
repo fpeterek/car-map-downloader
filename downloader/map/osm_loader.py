@@ -1,9 +1,9 @@
 import osmium
 
 from map.map import Map
-from node import Node
-from geo_position import GeoPosition
-from path import Path
+from map.node import Node
+from map.geo_position import GeoPosition
+from map.path import Path
 
 
 class MapLoaderHandler(osmium.SimpleHandler):
@@ -24,9 +24,14 @@ class MapLoaderHandler(osmium.SimpleHandler):
         if way.tags['highway'] in MapLoaderHandler.excluded_ways:
             return
         previous = way.nodes[0]
+        # Ensure nodes are added to map in case they haven't been added before
+        # We want nodes to be added before ways, not the other way around
+        # Adding all necessary nodes here helps ensure that
+        self.map.add(previous)
 
         for i in range(1, len(way.nodes)):
             current = way.nodes[i]
+            self.map.add(current)
 
             begin = GeoPosition(lon=previous.lon, lat=previous.lat)
             end = GeoPosition(lon=current.lon, lat=current.lat)

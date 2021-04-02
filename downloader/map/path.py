@@ -1,6 +1,6 @@
 from typing import Dict
 
-from geo_position import GeoPosition
+from map.geo_position import GeoPosition
 
 
 class Path:
@@ -9,7 +9,7 @@ class Path:
         self.end = end
 
     @property
-    def json_dict(self) -> dict[str, dict[str, float]]:
+    def json_dict(self) -> Dict[str, Dict[str, float]]:
         return {
             'begin': self.begin.__dict__,
             'end': self.end.__dict__

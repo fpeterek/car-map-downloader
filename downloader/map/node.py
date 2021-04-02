@@ -1,7 +1,7 @@
 from typing import Set, Dict
 
-from geo_position import GeoPosition
-from path import Path
+from map.geo_position import GeoPosition
+from map.path import Path
 
 
 class Node:
@@ -19,7 +19,7 @@ class Node:
         self.paths.add(path)
 
     @property
-    def json_dict(self) -> dict[str, dict[str, float]]:
+    def json_dict(self) -> Dict[str, Dict[str, float]]:
         return {'position': self.position.__dict__}
 
     def __hash__(self):
